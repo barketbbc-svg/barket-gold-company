@@ -1,0 +1,825 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Färgpalett */
+    --color-gold: #d4af37;
+    --color-gold-light: #e8c547;
+    --color-gold-dark: #b8942f;
+    --color-dark: #1a1a1a;
+    --color-dark-light: #2c2c2c;
+    --color-white: #ffffff;
+    --color-gray: #f5f5f5;
+    --color-gray-dark: #888888;
+    
+    /* Typsnitt */
+    --font-heading: 'Georgia', 'Times New Roman', serif;
+    --font-body: 'Segoe UI', 'Arial', sans-serif;
+    
+    /* Storlekar */
+    --container-width: 1200px;
+    --header-height: 80px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    color: var(--color-dark);
+    background-color: var(--color-white);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+ul {
+    list-style: none;
+}
+
+/* --- CONTAINER --- */
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ===========================================
+   HEADER - ANVÄNDER FLEXBOX
+   =========================================== */
+.header {
+    background-color: var(--color-dark);
+    height: var(--header-height);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.header-content {
+    height: 100%;
+    display: flex;                    /* FLEXBOX */
+    justify-content: space-between;   /* FLEXBOX */
+    align-items: center;              /* FLEXBOX */
+}
+
+/* Logo med Flexbox */
+.logo {
+    display: flex;                    /* FLEXBOX */
+    flex-direction: column;           /* FLEXBOX */
+    align-items: flex-start;          /* FLEXBOX */
+}
+
+.logo-text {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--color-gold);
+    letter-spacing: 3px;
+}
+
+.logo-subtitle {
+    font-size: 0.65rem;
+    color: var(--color-gray-dark);
+    letter-spacing: 2px;
+    margin-top: -2px;
+}
+
+/* Navigation med Flexbox */
+.nav-list {
+    display: flex;                    /* FLEXBOX */
+    gap: 30px;                        /* FLEXBOX */
+}
+
+.nav-link {
+    color: var(--color-white);
+    font-weight: 500;
+    padding: 10px 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-gold);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--color-gold);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* ===========================================
+   HERO SECTION - BILDSPEL
+   =========================================== */
+.hero {
+    position: relative;
+    height: 70vh;
+    min-height: 500px;
+    overflow: hidden;
+    background-color: var(--color-dark);
+}
+
+.slideshow {
+    position: absolute;
+    inset: 0;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.4),
+        rgba(0, 0, 0, 0.7)
+    );
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+    height: 100%;
+    display: flex;                    /* FLEXBOX */
+    flex-direction: column;           /* FLEXBOX */
+    justify-content: center;          /* FLEXBOX */
+    align-items: center;              /* FLEXBOX */
+    text-align: center;
+    padding: 20px;
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--color-gold);
+    margin-bottom: 15px;
+    animation: fadeSlideUp 1s ease-out;
+}
+
+.hero-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: var(--color-white);
+    margin-bottom: 30px;
+    opacity: 0.9;
+    animation: fadeSlideUp 1s ease-out 0.2s both;
+}
+
+/* Bildspelsindikatorer */
+.slide-indicators {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;                    /* FLEXBOX */
+    gap: 12px;                        /* FLEXBOX */
+    z-index: 20;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--color-gold);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator:hover,
+.indicator.active {
+    background-color: var(--color-gold);
+    transform: scale(1.2);
+}
+
+/* ===========================================
+   PAGE HERO (Produkt & Kontaktsidor)
+   =========================================== */
+.page-hero {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-light) 100%);
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.page-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--color-gold);
+    margin-bottom: 15px;
+}
+
+.page-subtitle {
+    color: var(--color-gray-dark);
+    font-size: 1.1rem;
+}
+
+/* ===========================================
+   SEKTIONER
+   =========================================== */
+.section {
+    padding: 80px 0;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    color: var(--color-dark);
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: var(--color-gold);
+    margin: 15px auto 0;
+}
+
+.section-text {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--color-gray-dark);
+}
+
+/* Alternativ bakgrundsfärg */
+.welcome {
+    background-color: var(--color-gray);
+}
+
+.why-us {
+    background-color: var(--color-dark);
+}
+
+.why-us .section-title {
+    color: var(--color-gold);
+}
+
+/* ===========================================
+   PRODUKTGRID - ANVÄNDER CSS GRID
+   =========================================== */
+.product-grid {
+    display: grid;                              /* CSS GRID */
+    grid-template-columns: repeat(3, 1fr);      /* CSS GRID */
+    gap: 30px;                                  /* CSS GRID */
+}
+
+/* Full produktgrid på produktsidan */
+.product-grid-full {
+    display: grid;                              /* CSS GRID */
+    grid-template-columns: 1fr;                 /* CSS GRID */
+    gap: 40px;                                  /* CSS GRID */
+}
+
+/* Produktkort */
+.product-card {
+    background-color: var(--color-white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.product-image-wrapper {
+    overflow: hidden;
+    aspect-ratio: 4/3;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.1);
+}
+
+.product-info {
+    padding: 25px;
+    text-align: center;
+}
+
+.product-title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    color: var(--color-dark);
+    margin-bottom: 10px;
+}
+
+.product-description {
+    color: var(--color-gray-dark);
+    margin-bottom: 20px;
+}
+
+/* Stora produktkort (produktsidan) */
+.product-card-large {
+    display: grid;                              /* CSS GRID */
+    grid-template-columns: 1fr 1fr;             /* CSS GRID */
+    gap: 40px;                                  /* CSS GRID */
+    background-color: var(--color-white);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.product-card-large:nth-child(even) {
+    direction: rtl;
+}
+
+.product-card-large:nth-child(even) > * {
+    direction: ltr;
+}
+
+.product-card-large .product-image-wrapper {
+    aspect-ratio: 1;
+}
+
+.product-card-large .product-info {
+    padding: 40px;
+    text-align: left;
+    display: flex;                              /* FLEXBOX */
+    flex-direction: column;                     /* FLEXBOX */
+    justify-content: center;                    /* FLEXBOX */
+}
+
+.product-category {
+    display: inline-block;
+    background-color: var(--color-gold);
+    color: var(--color-dark);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.product-subtitle {
+    color: var(--color-gray-dark);
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
+.product-features {
+    margin: 20px 0;
+}
+
+.product-features li {
+    padding: 8px 0;
+    color: var(--color-dark);
+}
+
+/* ===========================================
+   FEATURES GRID (Varför välja oss)
+   =========================================== */
+.features {
+    display: grid;                              /* CSS GRID */
+    grid-template-columns: repeat(3, 1fr);      /* CSS GRID */
+    gap: 30px;                                  /* CSS GRID */
+}
+
+.feature {
+    text-align: center;
+    padding: 30px;
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.feature-title {
+    font-family: var(--font-heading);
+    color: var(--color-gold);
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.feature-text {
+    color: var(--color-gray-dark);
+}
+
+/* ===========================================
+   KVALITETSGRID (Produktsidan)
+   =========================================== */
+.quality-section {
+    background-color: var(--color-gray);
+}
+
+.quality-grid {
+    display: grid;                              /* CSS GRID */
+    grid-template-columns: repeat(3, 1fr);      /* CSS GRID */
+    gap: 30px;                                  /* CSS GRID */
+}
+
+.quality-item {
+    text-align: center;
+    padding: 30px;
+    background-color: var(--color-white);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.quality-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.quality-item h3 {
+    font-family: var(--font-heading);
+    color: var(--color-dark);
+    margin-bottom: 10px;
+}
+
+.quality-item p {
+    color: var(--color-gray-dark);
+    font-size: 0.95rem;
+}
+
+/* ===========================================
+   KONTAKTSIDA - CSS GRID LAYOUT
+   =========================================== */
+.contact-grid {
+    display: grid;                              /* CSS GRID */
+    grid-template-columns: 1.5fr 1fr;           /* CSS GRID */
+    gap: 50px;                                  /* CSS GRID */
+}
+
+/* Kontaktformulär */
+.contact-form-wrapper {
+    background-color: var(--color-white);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--color-dark);
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: var(--color-dark);
+    margin-bottom: 8px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+}
+
+/* Kontaktinformation */
+.contact-info {
+    display: flex;                              /* FLEXBOX */
+    flex-direction: column;                     /* FLEXBOX */
+    gap: 20px;                                  /* FLEXBOX */
+}
+
+.info-card {
+    background-color: var(--color-dark);
+    padding: 25px;
+    border-radius: 10px;
+    color: var(--color-white);
+}
+
+.info-title {
+    font-family: var(--font-heading);
+    color: var(--color-gold);
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.info-card address {
+    font-style: normal;
+    line-height: 1.8;
+}
+
+.info-card a {
+    color: var(--color-gold);
+}
+
+.info-card a:hover {
+    text-decoration: underline;
+}
+
+.info-note {
+    font-size: 0.85rem;
+    color: var(--color-gray-dark);
+    margin-top: 5px;
+}
+
+.hours-table {
+    width: 100%;
+}
+
+.hours-table td {
+    padding: 5px 0;
+}
+
+.hours-table td:last-child {
+    text-align: right;
+    color: var(--color-gold);
+}
+
+/* ===========================================
+   KNAPPAR
+   =========================================== */
+.btn {
+    display: inline-block;
+    padding: 15px 35px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-family: var(--font-body);
+}
+
+.btn-primary {
+    background-color: var(--color-gold);
+    color: var(--color-dark);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+}
+
+.btn-secondary {
+    background-color: var(--color-dark);
+    color: var(--color-white);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-dark-light);
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* ===========================================
+   FOOTER - CSS GRID LAYOUT
+   =========================================== */
+.footer {
+    background-color: var(--color-dark);
+    color: var(--color-white);
+    padding-top: 60px;
+}
+
+.footer-content {
+    display: grid;                              /* CSS GRID */
+    grid-template-columns: repeat(4, 1fr);      /* CSS GRID */
+    gap: 40px;                                  /* CSS GRID */
+    padding-bottom: 40px;
+}
+
+.footer-title {
+    font-family: var(--font-heading);
+    color: var(--color-gold);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.footer-section p,
+.footer-section address {
+    color: var(--color-gray-dark);
+    font-style: normal;
+    line-height: 1.8;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: var(--color-gray-dark);
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--color-gold);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    text-align: center;
+    color: var(--color-gray-dark);
+    font-size: 0.9rem;
+}
+
+/* ===========================================
+   ANIMATIONER
+   =========================================== */
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ===========================================
+   RESPONSIV DESIGN - MEDIA QUERIES
+   =========================================== */
+
+/* Tablet */
+@media (max-width: 992px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);  /* CSS GRID RESPONSIV */
+    }
+    
+    .features {
+        grid-template-columns: repeat(2, 1fr);  /* CSS GRID RESPONSIV */
+    }
+    
+    .quality-grid {
+        grid-template-columns: repeat(2, 1fr);  /* CSS GRID RESPONSIV */
+    }
+    
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);  /* CSS GRID RESPONSIV */
+    }
+    
+    .product-card-large {
+        grid-template-columns: 1fr;             /* CSS GRID RESPONSIV */
+    }
+    
+    .product-card-large:nth-child(even) {
+        direction: ltr;
+    }
+    
+    .contact-grid {
+        grid-template-columns: 1fr;             /* CSS GRID RESPONSIV */
+    }
+}
+
+/* Mobil */
+@media (max-width: 768px) {
+    :root {
+        --header-height: 70px;
+    }
+    
+    .header-content {
+        flex-direction: column;                 /* FLEXBOX RESPONSIV */
+        height: auto;
+        padding: 15px 20px;
+    }
+    
+    .logo {
+        margin-bottom: 15px;
+    }
+    
+    .nav-list {
+        gap: 20px;
+    }
+    
+    .hero {
+        height: 60vh;
+        min-height: 400px;
+    }
+    
+    .product-grid {
+        grid-template-columns: 1fr;             /* CSS GRID RESPONSIV */
+    }
+    
+    .features {
+        grid-template-columns: 1fr;             /* CSS GRID RESPONSIV */
+    }
+    
+    .quality-grid {
+        grid-template-columns: 1fr;             /* CSS GRID RESPONSIV */
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;             /* CSS GRID RESPONSIV */
+        text-align: center;
+    }
+    
+    .section {
+        padding: 50px 0;
+    }
+    
+    .product-card-large .product-info {
+        padding: 25px;
+    }
+    
+    .contact-form-wrapper {
+        padding: 25px;
+    }
+}
+
+/* Små mobiler */
+@media (max-width: 480px) {
+    .nav-list {
+        flex-wrap: wrap;                        /* FLEXBOX RESPONSIV */
+        justify-content: center;                /* FLEXBOX RESPONSIV */
+        gap: 15px;
+    }
+    
+    .btn {
+        padding: 12px 25px;
+        font-size: 0.9rem;
+    }
+    
+    .hero-title {
+        font-size: 1.8rem;
+    }
+}
